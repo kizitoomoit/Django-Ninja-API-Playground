@@ -20,6 +20,7 @@ def create_employee(request, payload: EmployeeIn, cv: File[UploadedFile]):
    # #employee = Employee.objects.create(**payload.dict())
    # return {"id": employee.id}
 
+# This is endpoint is responsible for employees using their first name or last name
 @api.get("/employees/search", response=List[EmployeeOutSchema])
 def search_for_employee(request, filters: Query[EmployeeSearchSchema]):
     return search_employee(filters)
