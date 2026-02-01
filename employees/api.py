@@ -58,45 +58,53 @@ def update_employee(request, employee_id: int, payload: EmployeeIn):
     #employee.save()
     return employee
 
+# This api endpoint is responsible for deleting employee using their id
 @api.delete("/employees/{employee_id}")
 def delete_employee(request, employee_id: int):
     employee = delete_employee_api(employee_id)
     return {"success": True}
 
+# This api endpoint is responsible for creating new departments
 @api.post("/departments")
 def creat_department(request, payload: DepartmentIn):
     department = Department.objects.create(**payload.dict())
     return {"id": department.id }
 
+# This api endpoint is responsible for getting a single employee using their id
 @api.get("/departments/{department_id}", response=DepartmentOut)
 def get_department(request, department_id: int):
     department = get_object_or_404(Department, id=department_id)
     return department
 
+# This api endpoint is responsible for listing departments
 @api.get("/departments", response=List[DepartmentOut])
 def get_departments(request):
     qs = Department.objects.all()
     return qs
 
+# This is a mock data for the weapons api endpoint
 weapons = ["Ninjato", "Shuriken", "katana", "Kama", "Kunai", "Naginata", "Yari"]
 
+# This endpoint is responsible for listing available weapons, with limit and offset capabilities
 @api.get("/weapons")
 def list_weapons(request, limit: int, offset: int):
     return weapons[offset: offset + limit]
 
-@api.get("/weapons/search")
-def search_weapons(request, q: str, offset: int = 0):
-    results = [w for w in weapons if q in w.lower()]
-    return results
 
+# This endpoint is responsible for fetching available items
 @api.get("/items", response=List[ItemOut])
 def get_items(request):
     item = Item.objects.all()
     return list(item)
+
+
+# This endpoint is responsible for creating items
 @api.post("/items", response=ItemOut)
 def create_items(request, payload: ItemIn):
     item = Item.objects.create(**payload.dict())
     return item
+
+# This endpoint is repsonsible for deleting item
 @api.delete("/items/{item_id}")
 def delete_item(request, item_id: int):
     item = get_object_or_404(Item, id=item_id)
