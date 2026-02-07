@@ -1,8 +1,9 @@
 from datetime import date
-from ninja import Schema
+from ninja import Schema, Field
 from typing import Optional
 from ninja.orm import ModelSchema
 from .models import Employee, Item
+from pydantic import EmailStr
 
 # Schema for creation of Employees
 class EmployeeIn(Schema):
@@ -16,8 +17,9 @@ class EmployeeOut(Schema):
     id: int
     first_name: str
     last_name: str
-    department_id: int = None
-    department: DepartmentOut
+    #department_id: int = None
+    #department: DepartmentOut
+    dpepartment_title: str = Field(None, alias="department.title")
    # department_title: str
     birthdate: date = None
 
@@ -53,3 +55,23 @@ class ItemOut(Schema):
     item_description: str
     item_price: float
     item_quantity: int
+
+
+class UserDetails(Schema):
+    f_name: str
+    l_name: str
+    birthdate: date
+
+class UserIn(Schema):
+    username: str
+    password: str
+    email: EmailStr
+
+class UserOut(Schema):
+    id: int
+    username: str
+    email: EmailStr
+
+class PictureSchema(Schema):
+    title: str
+    image: str

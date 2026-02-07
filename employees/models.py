@@ -18,3 +18,7 @@ class Item(models.Model):
     item_description = models.TextField()
     item_price = models.DecimalField(max_digits=10, decimal_places=2)
     item_quantity = models.IntegerField()
+
+class Picture(models.Model):
+    title = models.CharField(max_length=100)
+    image = models.ImageField(upload_to="images")
