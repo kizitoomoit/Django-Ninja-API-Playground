@@ -1,4 +1,4 @@
-from .schema import EmployeeIn, EmployeeOut, DepartmentIn, DepartmentOut, EmployeeOutSchema, EmployeeSearchSchema, ItemIn, ItemOut, UserDetails, UserIn, UserOut, PictureSchema
+from .schema import EmployeeIn, EmployeeOut, DepartmentIn, DepartmentOut, EmployeeOutSchema, EmployeeSearchSchema, ItemIn, ItemOut, UserDetails, UserIn, UserOut, PictureSchema, Token, Message, LoginSchema
 from django.contrib.auth.models import User
 from ninja import NinjaAPI, Form, UploadedFile, File, Query, Schema
 from .models import Employee, Department, Item, Picture
@@ -6,8 +6,10 @@ from django.shortcuts import get_object_or_404
 from typing import List
 from .services import list_employees, employee_details, update_employee_details, create_new_employee, delete_employee_api, search_employee
 from datetime import date
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpRequest
 from django.shortcuts import redirect
+from django.contrib.auth import authenticate, login
+from django.http import HttpRequest
 from ninja import router
 
 api = NinjaAPI()
@@ -40,8 +42,8 @@ def get_employee(request, employee_id: int):
 # Get list of employees
 @api.get("/employees", response=List[EmployeeOut])
 def get_employees(request):
-    employee = list_employees()
-    return employee
+    #employee = list_employees()
+    return list_employees()
     #qs = Employee.objects.all()
     #return qs
    # employees = Employee.objects.select_related("department").all()
@@ -180,3 +182,32 @@ def result_django(request):
 @api.get("/something")
 def some_redirect(request):
     return redirect("/some-path")
+
+@api.post("/login1")
+def login1(request, payload: LoginSchema):
+    auth_not_valid = True
+    negative_balance = False
+    user = authenticate(request, username=payload.username, password=payload.password)
+    if user:
+        login1(request, user)
+        return {"success": True}
+    return {"message": "Invalid credentials"}
+   # if auth_not_valid:
+   #     return 401, {'message': 'Unauthorized'}
+   # if negative_balance:
+   #     return 402, {'message': 'Insufficient balance amount. Please proceed to a payment page'}
+   # return 200, {'token': 'skljfdkasjflsjaklfd', 'expires': 2026-2-20}
+
+@api.post("/no_contet", response={204: None})
+def no_contect(request):
+    return 204, None
+
+
+# Altering the Responses
+@api.get("/cookie")
+def feed_cookiemonster(request: HttpRequest, response: HttpResponse):
+    # Set cookie
+    response.set_cookie("cookie", "delicious")
+    # set header.
+    response["X-Cookiemonster"] = "blue"
+    return {"cookiemonster_happy": True}

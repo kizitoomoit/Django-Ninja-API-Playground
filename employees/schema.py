@@ -4,7 +4,7 @@ from typing import Optional
 from ninja.orm import ModelSchema
 from .models import Employee, Item
 from pydantic import EmailStr
-
+from pydantic import computed_field
 # Schema for creation of Employees
 class EmployeeIn(Schema):
     first_name: str | None = None
@@ -19,9 +19,18 @@ class EmployeeOut(Schema):
     last_name: str
     #department_id: int = None
     #department: DepartmentOut
-    dpepartment_title: str = Field(None, alias="department.title")
+    department_title: str = Field(None, alias="department.title")
+    #department_title: str = None
    # department_title: str
     birthdate: date = None
+    path: str =""
+
+
+
+    @staticmethod
+    def resolve_path(obj, context):
+        request = context["request"]
+        return request.path
 
 # Schema for creating departments
 class DepartmentIn(Schema):
@@ -75,3 +84,14 @@ class UserOut(Schema):
 class PictureSchema(Schema):
     title: str
     image: str
+
+class Token(Schema):
+    token: str
+    expires: date
+
+class Message(Schema):
+    message: str
+
+class LoginSchema(Schema):
+    username: str
+    password: str

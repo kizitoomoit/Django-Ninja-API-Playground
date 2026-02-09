@@ -1,11 +1,14 @@
 from .models import Employee, Department
 from typing import List
 from django.shortcuts import get_object_or_404
-from .schema import EmployeeSearchSchema
+from .schema import EmployeeSearchSchema, EmployeeOut
+from django.db.models import QuerySet
 
 # Get a list of employees in the system
-def list_employees() -> List[Employee]:
-    return list(Employee.objects.all())
+def list_employees() -> Employee:
+    employees = Employee.objects.select_related("department")
+    return employees
+    #return [EmployeeOut.from_orm(e) for e in employees]
 
 # Create new employee and upload their CV as well
 def create_new_employee(payload, cv) -> Employee:
