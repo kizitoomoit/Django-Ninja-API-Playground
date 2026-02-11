@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.urls import path
 #from ninja import NinjaAPI
 from .api import api
-from employees.api import api
+from NinjaTutorial.api import api
 from ninja.security import APIKeyCookie, APIKeyHeader, HttpBearer
 from ninja.security import SessionAuth
 

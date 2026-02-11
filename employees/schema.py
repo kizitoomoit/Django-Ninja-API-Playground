@@ -1,9 +1,10 @@
 from datetime import date
 from ninja import Schema, Field
-from typing import Optional
+from typing import Optional, List
 from ninja.orm import ModelSchema
 from .models import Employee, Item
 from pydantic import EmailStr
+from django.contrib.auth.models import User, Group
 from pydantic import computed_field
 # Schema for creation of Employees
 class EmployeeIn(Schema):
@@ -23,15 +24,15 @@ class EmployeeOut(Schema):
     #department_title: str = None
    # department_title: str
     birthdate: date = None
-    path: str =""
-
-
-
-    @staticmethod
-    def resolve_path(obj, context):
-        request = context["request"]
-        return request.path
-
+#    path: str =""
+#
+#
+#
+#    @staticmethod
+#    def resolve_path(obj, context):
+#        request = context["request"]
+#        return request.path
+#
 # Schema for creating departments
 class DepartmentIn(Schema):
     id: int
@@ -95,3 +96,16 @@ class Message(Schema):
 class LoginSchema(Schema):
     username: str
     password: str
+
+class GroupOut(ModelSchema):
+    class Meta:
+        model = Group
+        fields = "__all__"
+
+class UserSchemaOut(ModelSchema):
+    groups: List[GroupOut] = []
+    class Meta:
+        model = User
+        fields = ['id', "username", "first_name", "last_name", "email", "date_joined", "last_login"]
+
+

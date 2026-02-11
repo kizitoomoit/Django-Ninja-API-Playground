@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'apidemo.apps.ApidemoConfig',
+    'departments.apps.DepartmentsConfig',
     'employees.apps.EmployeesConfig',
 ]
 

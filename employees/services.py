@@ -1,12 +1,13 @@
-from .models import Employee, Department
+from .models import Employee
 from typing import List
 from django.shortcuts import get_object_or_404
-from .schema import EmployeeSearchSchema, EmployeeOut
+from .schema import EmployeeSearchSchema
 from django.db.models import QuerySet
 
 # Get a list of employees in the system
 def list_employees() -> Employee:
-    employees = Employee.objects.select_related("department")
+    #employees = Employee.objects.select_related("department")
+    employees = Employee.objects.all()
     return employees
     #return [EmployeeOut.from_orm(e) for e in employees]
 
@@ -32,7 +33,7 @@ def update_employee_details(employee_id: int, payload) -> Employee:
     #return {"success": True}
 
 # Delete the employee in the system or return 404 if no id is found
-def delete_employee_api(employee_id: id) -> bool:
+def delete_employee_api(employee_id: int) -> bool:
     employee = get_object_or_404(Employee, id=employee_id)
     employee.delete()
     return True
