@@ -27,11 +27,18 @@ def create_employee(request, payload: EmployeeIn, cv: File[UploadedFile]):
    # #employee = Employee.objects.create(**payload.dict())
    # return {"id": employee.id}
 
+@router.get("/test")
+def test(request):
+    return {"ok": True}
 # This is endpoint is responsible for employees using their first name or last name
 #@api.get("/employees/search", response=List[EmployeeOutSchema])
 @router.get("/search", response=List[EmployeeOutSchema])
 def search_for_employee(request, filters: Query[EmployeeSearchSchema]):
     return search_employee(filters)
+
+@router.post("/login")
+def login(request, username: Form[str], password: Form[str]):
+    return {'username': username, 'password': '*****'}
 
 # This api endpoint is responsible for listing departments
 #@api.get("/departments", response=List[DepartmentOut])
@@ -133,9 +140,6 @@ def delete_item(request, item_id: int):
     return {"Success": True}
 
 #@api.post("/login")
-@router.post("/login")
-def login(request, username: Form[str], password: Form[str]):
-    return {'username': username, 'password': '*****'}
 
 # Uploading a single file
 #@api.post("/uploadfile")

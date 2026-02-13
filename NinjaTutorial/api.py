@@ -1,9 +1,12 @@
 from ninja import NinjaAPI, Schema
 from .schema import HelloSchema, UserSchema, Error
-from employees.api import router as employee_router
+from users.api import router as users_router
 from departments.api import router as department_router
+from employees.api import router as employee_router
+from .auth import BasicAuth
 
-api = NinjaAPI()
+
+api = NinjaAPI(auth=BasicAuth())
 
 #class HelloSchema(Schema):
 #    name: str = "world"
@@ -22,5 +25,6 @@ api = NinjaAPI()
 #    return request.user
 #
 
+api.add_router("/users/", users_router)
 api.add_router("/employees/", employee_router)
 api.add_router("/departments/", department_router)

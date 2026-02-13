@@ -13,9 +13,15 @@ def list_employees() -> Employee:
 
 # Create new employee and upload their CV as well
 def create_new_employee(payload, cv) -> Employee:
+    from departments.models import Department
+    department = get_object_or_404(Department, id=payload.department_id)
+
     payload_dict = payload.dict()
-    employee = Employee(**payload_dict)
-    employee.cv.save(cv.name, cv)
+    payload_dict.pop("department_id")
+
+    employee = Employee(**payload_dict, department=department)
+    employee.save()
+    employee.cv.save(cv.name, cv, save=True)
     return employee
 
 # get employee details using their id and return 404 if there is no match
