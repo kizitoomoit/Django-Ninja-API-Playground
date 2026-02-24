@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'apidemo.apps.ApidemoConfig',
     'departments.apps.DepartmentsConfig',
     'employees.apps.EmployeesConfig',
+    'ninja'
 ]
 
 MIDDLEWARE = [

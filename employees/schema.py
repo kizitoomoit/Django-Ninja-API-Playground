@@ -5,6 +5,7 @@ from ninja.orm import ModelSchema
 from .models import Employee, Item
 from pydantic import EmailStr
 from django.contrib.auth.models import User, Group
+from django.urls import reverse
 from pydantic import computed_field
 # Schema for creation of Employees
 class EmployeeIn(Schema):
@@ -24,15 +25,15 @@ class EmployeeOut(Schema):
     #department_title: str = None
    # department_title: str
     birthdate: date = None
-#    path: str =""
-#
-#
-#
-#    @staticmethod
-#    def resolve_path(obj, context):
-#        request = context["request"]
-#        return request.path
-#
+    path: str =""
+
+
+    @staticmethod
+    def resolve_path(obj, context):
+        request = context["request"]
+        url = reverse("api-1.0.0:get_employee", args=[obj.id])
+        #return request.path
+        return request.build_absolute_uri(url)
 # Schema for creating departments
 class DepartmentIn(Schema):
     id: int
